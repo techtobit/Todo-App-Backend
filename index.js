@@ -33,10 +33,25 @@ async function run() {
   //For Editing & Updating Task
   app.get('/task/:id', async (req, res) => {
    const id = req.params.id;
-   const query = {_id : ObjectId(id)};
-   const cursor = taskCollection.find(query)
-   const tasks = await cursor.toArray()
-   res.send(tasks);
+   const query = { _id: ObjectId(id) };
+   const task = await taskCollection.findOne(query);
+   res.send(task)
+  })
+
+
+  //For Updating Task
+  app.put('/task/:id', async (req, res) => {
+   const id = req.params.id;
+   const updateDescription = req.body;
+   const filter = { _id: ObjectId(id) };
+   const options = { upsert: true };
+   const upDateTask = {
+    $set: {
+     Description: updateDescription.Description
+    }
+   }
+   const updateTask = await taskCollection.updateOne(filter, upDateTask, options)
+   res.send(updateTask)
   })
 
 
@@ -49,10 +64,12 @@ async function run() {
 
 
   //Once Task Finish it will Save on new Database to show complied
-  app.post('/taskFinish', async (req, res) => {
+  app.get('/taskFinish', async (req, res) => {
    const data = req.body;
-   const newTaskFinish = await taskFinishCollection.insertOne(data)
-   res.send(newTaskFinish);
+   const query = {};
+   const cursor = taskFinishCollection.find(query)
+   const taskFinish = await cursor.toArray()
+   res.send(taskFinish);
   })
 
 
