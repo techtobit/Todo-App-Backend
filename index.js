@@ -71,6 +71,13 @@ async function run() {
    const taskFinish = await cursor.toArray()
    res.send(taskFinish);
   })
+  app.get('/taskFinish/:id', async (req, res) => {
+   const id = req.params.id;
+   const query = { _id: ObjectId(id) };
+   const cursor = taskFinishCollection.find(query)
+   const taskFinish = await cursor.toArray()
+   res.send(taskFinish);
+  })
 
 
   //The Finish task will remove from List
@@ -78,6 +85,14 @@ async function run() {
    const id = req.params.id;
    const query = { _id: ObjectId(id) };
    const taskFinish = taskCollection.deleteOne(query)
+   res.send(taskFinish);
+  })
+
+  //The only Finish task will remove from Database
+  app.delete('/taskFinish/:id', async (req, res) => {
+   const id = req.params.id;
+   const query = { _id: ObjectId(id) };
+   const taskFinish = taskFinishCollection.deleteOne(query)
    res.send(taskFinish);
   })
 
