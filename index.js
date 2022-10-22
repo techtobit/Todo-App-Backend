@@ -64,6 +64,12 @@ async function run() {
 
 
   //Once Task Finish it will Save on new Database to show complied
+  app.post('/taskFinish', async (req, res) => {
+   const data = req.body;
+   const newTask = await taskFinishCollection.insertOne(data)
+   res.send(newTask);
+  })
+
   app.get('/taskFinish', async (req, res) => {
    const data = req.body;
    const query = {};
@@ -71,6 +77,7 @@ async function run() {
    const taskFinish = await cursor.toArray()
    res.send(taskFinish);
   })
+
   app.get('/taskFinish/:id', async (req, res) => {
    const id = req.params.id;
    const query = { _id: ObjectId(id) };
@@ -106,5 +113,5 @@ async function run() {
 
 run().catch(console.dir);
 
-app.get('/app/test', (req, res) => res.send('Hello App Hosted In vercel'))
+app.get('/', (req, res) => res.send('Hello App Hosted In vercel'))
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
