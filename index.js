@@ -106,5 +106,5 @@ async function run() {
 
 run().catch(console.dir);
 
-app.get('/app', (req, res) => res.send('Hello App Hosted In vercel'))
+app.get('/app/test', (req, res) => res.send('Hello App Hosted In vercel'))
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
